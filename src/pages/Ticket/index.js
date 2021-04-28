@@ -28,14 +28,12 @@ export default function Ticket() {
     if(pageNumber >= 2){
       setPageNumber(pageNumber - 1);
     }
-    setTicketNumber(ticketNumber);
   }
 
   const handleNext =()=>{
     if(pageNumber >= 1){
       setPageNumber(pageNumber + 1);
     }
-    setTicketNumber(ticketNumber);
   }
 
   useEffect(() => {
@@ -45,13 +43,10 @@ export default function Ticket() {
       let finalIndex;
       if(response.length < (initialIndex + ticketNumber)){
         finalIndex = response.length;
-        console.log("IF", finalIndex);
       }else{
         finalIndex = initialIndex + ticketNumber;
-        console.log("ELSE", finalIndex);
       }
       const newPaginatedTickets = response.slice(initialIndex, finalIndex);
-      console.log(newPaginatedTickets);
       setStartIndex(initialIndex);
       setEndIndex(finalIndex);
       setTickets(response);
@@ -63,6 +58,11 @@ export default function Ticket() {
     }
     fetchData();
   }, [ticketNumber, pageNumber]);
+
+  const handleChange =(newTicketNumber)=>{
+    setTicketNumber(newTicketNumber);
+    setPageNumber(1);
+  }
 
   return (
     <Container>
@@ -148,15 +148,12 @@ export default function Ticket() {
         </div>
         <FooterTable>
           <span>Rows per page: </span>
-          <select name="rows" id="rows" value={ticketNumber} onChange={(e) => setTicketNumber(e.target.value)}>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
+          <select name="rows" id="rows" value={ticketNumber} onChange={(e) => handleChange(e.target.value)}>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
           </select>
           <span>{startIndex + 1}-{endIndex} of {tickets.length}</span>
           <ButtonPagination onClick={() => handlePrev()}><img src={arrowLeft} alt="" /></ButtonPagination>
